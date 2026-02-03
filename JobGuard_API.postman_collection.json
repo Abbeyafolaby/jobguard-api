@@ -1,0 +1,559 @@
+{
+  "info": {
+    "name": "JobGuard API",
+    "description": "Complete API collection for JobGuard - Job Scam Detection Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"token\", jsonData.data.token);",
+                  "    pm.collectionVariables.set(\"token\", jsonData.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register a new user account"
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"token\", jsonData.data.token);",
+                  "    pm.collectionVariables.set(\"token\", jsonData.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login with email and password"
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "me"]
+            },
+            "description": "Get currently logged in user"
+          }
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "logout"]
+            },
+            "description": "Logout current user"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"john.doe@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/forgotpassword",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "forgotpassword"]
+            },
+            "description": "Request password reset"
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"password\": \"NewPassword123\",\n    \"confirmPassword\": \"NewPassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/resetpassword/:resetToken",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "resetpassword", ":resetToken"],
+              "variable": [
+                {
+                  "key": "resetToken",
+                  "value": "your-reset-token-here"
+                }
+              ]
+            },
+            "description": "Reset password using token from email"
+          }
+        },
+        {
+          "name": "Update Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"currentPassword\": \"Password123\",\n    \"password\": \"NewPassword123\",\n    \"confirmPassword\": \"NewPassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/updatepassword",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "updatepassword"]
+            },
+            "description": "Update password for logged in user"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "Create Job Scan (URL)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"jobUrl\": \"https://example.com/jobs/123\",\n    \"jobDescription\": \"We are looking for a remote developer. Must pay $500 upfront for training materials. Earn unlimited income!\",\n    \"companyName\": \"Tech Corp\",\n    \"companyWebsite\": \"https://techcorp-fake.com\",\n    \"companyEmail\": \"hr@gmail.com\",\n    \"jobTitle\": \"Senior Developer\",\n    \"location\": \"Remote\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/jobs",
+              "host": ["{{base_url}}"],
+              "path": ["jobs"]
+            },
+            "description": "Create a new job scan with URL and description"
+          }
+        },
+        {
+          "name": "Create Job Scan (File Upload)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "jobFile",
+                  "type": "file",
+                  "src": "/path/to/job-description.pdf"
+                },
+                {
+                  "key": "companyName",
+                  "value": "Sample Company",
+                  "type": "text"
+                },
+                {
+                  "key": "jobTitle",
+                  "value": "Software Engineer",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/jobs",
+              "host": ["{{base_url}}"],
+              "path": ["jobs"]
+            },
+            "description": "Create job scan by uploading a file"
+          }
+        },
+        {
+          "name": "Get All Job Scans",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jobs?page=1&limit=10&sort=-createdAt",
+              "host": ["{{base_url}}"],
+              "path": ["jobs"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "-createdAt"
+                },
+                {
+                  "key": "riskLevel",
+                  "value": "high",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Get all job scans for logged in user with pagination"
+          }
+        },
+        {
+          "name": "Get Single Job Scan",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jobs/:id",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "job-scan-id-here"
+                }
+              ]
+            },
+            "description": "Get detailed information about a specific job scan"
+          }
+        },
+        {
+          "name": "Delete Job Scan",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/jobs/:id",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "job-scan-id-here"
+                }
+              ]
+            },
+            "description": "Delete a job scan"
+          }
+        },
+        {
+          "name": "Report Job as Scam",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"reason\": \"This job is requesting personal banking information during the initial application. Very suspicious!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/jobs/:id/report",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", ":id", "report"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "job-scan-id-here"
+                }
+              ]
+            },
+            "description": "Report a suspicious job"
+          }
+        },
+        {
+          "name": "Get Public Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/jobs/stats",
+              "host": ["{{base_url}}"],
+              "path": ["jobs", "stats"]
+            },
+            "description": "Get public statistics (no auth required)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/profile",
+              "host": ["{{base_url}}"],
+              "path": ["users", "profile"]
+            },
+            "description": "Get user profile with statistics"
+          }
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"firstName\": \"Jane\",\n    \"lastName\": \"Smith\",\n    \"email\": \"jane.smith@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/profile",
+              "host": ["{{base_url}}"],
+              "path": ["users", "profile"]
+            },
+            "description": "Update user profile information"
+          }
+        },
+        {
+          "name": "Delete User Account",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/account",
+              "host": ["{{base_url}}"],
+              "path": ["users", "account"]
+            },
+            "description": "Delete user account (marks as deleted)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get User Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/analytics/user?startDate=2024-01-01&endDate=2024-12-31",
+              "host": ["{{base_url}}"],
+              "path": ["analytics", "user"],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2024-01-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2024-12-31"
+                }
+              ]
+            },
+            "description": "Get analytics for logged in user"
+          }
+        },
+        {
+          "name": "Get Global Analytics (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/analytics/global",
+              "host": ["{{base_url}}"],
+              "path": ["analytics", "global"]
+            },
+            "description": "Get global analytics (admin only)"
+          }
+        },
+        {
+          "name": "Get Scam Trends",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/analytics/trends",
+              "host": ["{{base_url}}"],
+              "path": ["analytics", "trends"]
+            },
+            "description": "Get scam detection trends (public)"
+          }
+        },
+        {
+          "name": "Get Recent Alerts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/analytics/alerts?limit=10",
+              "host": ["{{base_url}}"],
+              "path": ["analytics", "alerts"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get recent scam alerts (public)"
+          }
+        }
+      ]
+    }
+  ]
+}
