@@ -83,6 +83,9 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// Serve admin dashboard static files
+app.use('/admin', express.static('public/admin'));
+
 // API Documentation
 if (process.env.API_DOCS_ENABLED === 'true') {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
@@ -103,6 +106,7 @@ app.use('/api/v1/auth', require('./routes/authRoutes'));
 app.use('/api/v1/jobs', require('./routes/jobRoutes'));
 app.use('/api/v1/users', require('./routes/userRoutes'));
 app.use('/api/v1/analytics', require('./routes/analyticsRoutes'));
+app.use('/api/v1/admin', require('./routes/adminRoutes'));
 
 // 404 handler
 app.use(notFound);

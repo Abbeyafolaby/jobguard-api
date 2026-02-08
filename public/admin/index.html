@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobGuard Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-box">
+            <div class="logo-section">
+                <!-- <img src="/logo.jpg" alt="JobGuard Logo" /> -->
+                <h1 class="logo-text">JobGuard</h1>
+                <p class="logo-subtitle">Admin Dashboard</p>
+            </div>
+
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="admin@jobguard.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="••••••••">
+                </div>
+
+                <div id="loginError" class="error-message"></div>
+
+                <button type="submit" class="btn-primary" id="loginBtn">
+                    <span>Sign In</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="dashboardScreen" class="dashboard-container" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <!-- <img src="/logo.jpg" alt="JobGuard Logo" /> -->
+                <h1 class="header-title">JobGuard Admin</h1>
+            </div>
+            <div class="header-right">
+                <div class="admin-info">
+                    <span class="admin-email" id="adminEmail"></span>
+                    <span class="admin-badge">Admin</span>
+                </div>
+                <button id="logoutBtn" class="btn-secondary">Logout</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Overview Stats Cards -->
+            <section class="stats-grid">
+                <!-- Total Users -->
+                <div class="stat-card stat-card-primary">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-content">
+                        <h3 class="stat-label">Total Users</h3>
+                        <p class="stat-value" id="totalUsers">-</p>
+                        <p class="stat-detail">Registered accounts</p>
+                    </div>
+                </div>
+
+                <!-- Verified Users -->
+                <div class="stat-card stat-card-success">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <h3 class="stat-label">Verified Users</h3>
+                        <p class="stat-value" id="verifiedUsers">-</p>
+                        <p class="stat-detail">Email verified</p>
+                    </div>
+                </div>
+
+                <!-- Active Users -->
+                <div class="stat-card stat-card-warning">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-content">
+                        <h3 class="stat-label">Active Users</h3>
+                        <p class="stat-value" id="activeUsers">-</p>
+                        <p class="stat-detail">Last 30 days</p>
+                    </div>
+                </div>
+
+                <!-- Total Scans -->
+                <div class="stat-card stat-card-primary">
+                    <div class="stat-icon">🔍</div>
+                    <div class="stat-content">
+                        <h3 class="stat-label">Total Scans</h3>
+                        <p class="stat-value" id="totalScans">-</p>
+                        <p class="stat-detail">All time scans</p>
+                    </div>
+                </div>
+
+                <!-- High Risk Scans -->
+                <div class="stat-card stat-card-danger">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-content">
+                        <h3 class="stat-label">High Risk Scans</h3>
+                        <p class="stat-value" id="highRiskScans">-</p>
+                        <p class="stat-detail">
+                            <span id="highRiskPercent">-</span>% of total
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Avg Scam Probability -->
+                <div class="stat-card stat-card-danger">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <h3 class="stat-label">Avg Risk Score</h3>
+                        <p class="stat-value" id="avgScamProb">-</p>
+                        <p class="stat-detail">Probability</p>
+                    </div>
+                </div>
+
+                <!-- Scan Status: Completed -->
+                <div class="stat-card stat-card-success">
+                    <div class="stat-icon">✨</div>
+                    <div class="stat-content">
+                        <h3 class="stat-label">Completed Scans</h3>
+                        <p class="stat-value" id="completedScans">-</p>
+                        <p class="stat-detail">Successfully analyzed</p>
+                    </div>
+                </div>
+
+                <!-- Scan Status: Failed -->
+                <div class="stat-card stat-card-danger">
+                    <div class="stat-icon">❌</div>
+                    <div class="stat-content">
+                        <h3 class="stat-label">Failed Scans</h3>
+                        <p class="stat-value" id="failedScans">-</p>
+                        <p class="stat-detail">Analysis errors</p>
+                    </div>
+                </div>
+            </section>
+
+
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
