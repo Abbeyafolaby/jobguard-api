@@ -50,8 +50,13 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/register",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "register"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
             },
             "description": "Register a new user account"
           }
@@ -86,8 +91,13 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/login",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "login"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
             },
             "description": "Login with email and password"
           }
@@ -104,8 +114,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/auth/me",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "me"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
             },
             "description": "Get currently logged in user"
           }
@@ -122,8 +137,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/auth/logout",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "logout"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
             },
             "description": "Logout current user"
           }
@@ -144,8 +164,13 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/forgotpassword",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "forgotpassword"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "forgotpassword"
+              ]
             },
             "description": "Request password reset"
           }
@@ -166,8 +191,14 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/resetpassword/:resetToken",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "resetpassword", ":resetToken"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "resetpassword",
+                ":resetToken"
+              ],
               "variable": [
                 {
                   "key": "resetToken",
@@ -198,10 +229,52 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/updatepassword",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "updatepassword"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "updatepassword"
+              ]
             },
             "description": "Update password for logged in user"
+          }
+        },
+        {
+          "name": "Google OAuth Login",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/google",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "google"
+              ]
+            },
+            "description": "Initiate Google OAuth login. Opens in browser - redirects to Google consent screen. After authorization, redirects to callback URL with JWT token."
+          }
+        },
+        {
+          "name": "Google OAuth Callback",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/auth/google/callback",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "google",
+                "callback"
+              ]
+            },
+            "description": "Google OAuth callback handler. This endpoint is called by Google after user authorization. Returns JWT token and redirects to frontend."
           }
         }
       ]
@@ -229,8 +302,12 @@
             },
             "url": {
               "raw": "{{base_url}}/jobs",
-              "host": ["{{base_url}}"],
-              "path": ["jobs"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jobs"
+              ]
             },
             "description": "Create a new job scan with URL and description"
           }
@@ -267,8 +344,12 @@
             },
             "url": {
               "raw": "{{base_url}}/jobs",
-              "host": ["{{base_url}}"],
-              "path": ["jobs"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jobs"
+              ]
             },
             "description": "Create job scan by uploading a file"
           }
@@ -285,8 +366,12 @@
             ],
             "url": {
               "raw": "{{base_url}}/jobs?page=1&limit=10&sort=-createdAt",
-              "host": ["{{base_url}}"],
-              "path": ["jobs"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jobs"
+              ],
               "query": [
                 {
                   "key": "page",
@@ -322,8 +407,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/jobs/:id",
-              "host": ["{{base_url}}"],
-              "path": ["jobs", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jobs",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -346,8 +436,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/jobs/:id",
-              "host": ["{{base_url}}"],
-              "path": ["jobs", ":id"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jobs",
+                ":id"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -378,8 +473,14 @@
             },
             "url": {
               "raw": "{{base_url}}/jobs/:id/report",
-              "host": ["{{base_url}}"],
-              "path": ["jobs", ":id", "report"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jobs",
+                ":id",
+                "report"
+              ],
               "variable": [
                 {
                   "key": "id",
@@ -397,8 +498,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/jobs/stats",
-              "host": ["{{base_url}}"],
-              "path": ["jobs", "stats"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "jobs",
+                "stats"
+              ]
             },
             "description": "Get public statistics (no auth required)"
           }
@@ -420,8 +526,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/users/profile",
-              "host": ["{{base_url}}"],
-              "path": ["users", "profile"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "profile"
+              ]
             },
             "description": "Get user profile with statistics"
           }
@@ -446,8 +557,13 @@
             },
             "url": {
               "raw": "{{base_url}}/users/profile",
-              "host": ["{{base_url}}"],
-              "path": ["users", "profile"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "profile"
+              ]
             },
             "description": "Update user profile information"
           }
@@ -464,8 +580,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/users/account",
-              "host": ["{{base_url}}"],
-              "path": ["users", "account"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "users",
+                "account"
+              ]
             },
             "description": "Delete user account (marks as deleted)"
           }
@@ -487,8 +608,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/analytics/user?startDate=2024-01-01&endDate=2024-12-31",
-              "host": ["{{base_url}}"],
-              "path": ["analytics", "user"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "analytics",
+                "user"
+              ],
               "query": [
                 {
                   "key": "startDate",
@@ -515,8 +641,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/analytics/global",
-              "host": ["{{base_url}}"],
-              "path": ["analytics", "global"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "analytics",
+                "global"
+              ]
             },
             "description": "Get global analytics (admin only)"
           }
@@ -528,8 +659,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/analytics/trends",
-              "host": ["{{base_url}}"],
-              "path": ["analytics", "trends"]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "analytics",
+                "trends"
+              ]
             },
             "description": "Get scam detection trends (public)"
           }
@@ -541,8 +677,13 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/analytics/alerts?limit=10",
-              "host": ["{{base_url}}"],
-              "path": ["analytics", "alerts"],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "analytics",
+                "alerts"
+              ],
               "query": [
                 {
                   "key": "limit",

@@ -7,6 +7,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
+const passport = require('passport');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 const connectDB = require('./config/database');
@@ -81,6 +82,10 @@ app.use(xss());
 
 // Compression middleware
 app.use(compression());
+
+// Passport middleware
+require('./config/passport')(passport);
+app.use(passport.initialize());
 
 // Logging middleware
 if (process.env.NODE_ENV === 'development') {

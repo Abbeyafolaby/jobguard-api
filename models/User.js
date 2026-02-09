@@ -13,7 +13,6 @@ const validator = require('validator');
  *         - firstName
  *         - lastName
  *         - email
- *         - password
  *       properties:
  *         firstName:
  *           type: string
@@ -28,7 +27,17 @@ const validator = require('validator');
  *         password:
  *           type: string
  *           format: password
- *           description: User's password (min 8 characters)
+ *           description: User's password (required for local auth)
+ *         authProvider:
+ *           type: string
+ *           enum: [local, google]
+ *           default: local
+ *         googleId:
+ *           type: string
+ *           description: Google OAuth ID
+ *         avatar:
+ *           type: string
+ *           description: Profile picture URL
  *         role:
  *           type: string
  *           enum: [user, admin]
@@ -62,9 +71,24 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: [true, 'Please provide a password'],
+      required: [function () {
+        return this.authProvider === 'local';
+      }, 'Please provide a password'],
       minlength: [8, 'Password must be at least 8 characters'],
       select: false
+    },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true
+    },
+    authProvider: {
+      type: String,
+      enum: ['local', 'google'],
+      default: 'local'
+    },
+    avatar: {
+      type: String
     },
     role: {
       type: String,
@@ -109,12 +133,14 @@ userSchema.virtual('isLocked').get(function () {
 
 // Encrypt password before saving
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    next();
+  // Skip if password not modified or if OAuth user without password
+  if (!this.isModified('password') || !this.password) {
+    return next();
   }
-  
+
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 // Match user entered password to hashed password in database
@@ -142,18 +168,18 @@ userSchema.methods.incLoginAttempts = function () {
       $unset: { lockUntil: 1 }
     });
   }
-  
+
   // Otherwise we're incrementing
   const updates = { $inc: { loginAttempts: 1 } };
-  
+
   // Lock the account after 5 failed attempts for 2 hours
   const maxAttempts = 5;
   const lockTime = 2 * 60 * 60 * 1000; // 2 hours
-  
+
   if (this.loginAttempts + 1 >= maxAttempts && !this.isLocked) {
     updates.$set = { lockUntil: Date.now() + lockTime };
   }
-  
+
   return this.updateOne(updates);
 };
 
@@ -168,14 +194,14 @@ userSchema.methods.resetLoginAttempts = function () {
 // Generate password reset token
 userSchema.methods.getResetPasswordToken = function () {
   const resetToken = require('crypto').randomBytes(20).toString('hex');
-  
+
   this.resetPasswordToken = require('crypto')
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-  
+
   this.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
-  
+
   return resetToken;
 };
 

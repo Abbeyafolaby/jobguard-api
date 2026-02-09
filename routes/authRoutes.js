@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const {
   register,
   login,
@@ -234,4 +235,64 @@ router.put('/resetpassword/:resetToken', passwordValidation, validate, resetPass
  */
 router.put('/updatepassword', protect, updatePassword);
 
+/**
+ * @swagger
+ * /api/v1/auth/google:
+ *   get:
+ *     summary: Initiate Google OAuth login
+ *     tags: [Authentication]
+ *     description: Redirects user to Google login page
+ *     responses:
+ *       302:
+ *         description: Redirect to Google OAuth consent screen
+ */
+router.get('/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email']
+  })
+);
+
+/**
+ * @swagger
+ * /api/v1/auth/google/callback:
+ *   get:
+ *     summary: Google OAuth callback
+ *     tags: [Authentication]
+ *     description: Handles Google OAuth callback and issues JWT
+ *     responses:
+ *       302:
+ *         description: Redirect to frontend with token
+ *       401:
+ *         description: Authentication failed
+ */
+router.get('/google/callback',
+  passport.authenticate('google', {
+    session: false,
+    failureRedirect: `${process.env.CLIENT_URL}/login?error=google_auth_failed`
+  }),
+  (req, res) => {
+    // Create JWT token
+    const token = req.user.getSignedJwtToken();
+
+    // Option 1: Redirect to frontend with token in URL (for SPAs)
+    const redirectUrl = `${process.env.CLIENT_URL}/auth/callback?token=${token}`;
+
+    // Set cookie as well
+    const cookieOptions = {
+      expires: new Date(
+        Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+      ),
+      httpOnly: true
+    };
+
+    if (process.env.NODE_ENV === 'production') {
+      cookieOptions.secure = true;
+    }
+
+    res.cookie('token', token, cookieOptions);
+    res.redirect(redirectUrl);
+  }
+);
+
 module.exports = router;
+
