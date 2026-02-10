@@ -268,14 +268,14 @@ router.get('/google',
 router.get('/google/callback',
   passport.authenticate('google', {
     session: false,
-    failureRedirect: `${process.env.CLIENT_URL}/login?error=google_auth_failed`
+    failureRedirect: `${process.env.CLIENT_URL}/sign-in.html?error=google_auth_failed`
   }),
   (req, res) => {
     // Create JWT token
     const token = req.user.getSignedJwtToken();
 
     // Option 1: Redirect to frontend with token in URL (for SPAs)
-    const redirectUrl = `${process.env.CLIENT_URL}/auth/callback?token=${token}`;
+    const redirectUrl = `${process.env.CLIENT_URL}/auth-callback.html?token=${token}`;
 
     // Set cookie as well
     const cookieOptions = {
